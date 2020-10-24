@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:plants_vs_zombie/Constant/assets.dart';
 import 'package:plants_vs_zombie/Models/bullet.dart';
 import 'package:plants_vs_zombie/Models/main_handler.dart';
@@ -10,6 +11,7 @@ import 'package:plants_vs_zombie/Utils.dart/audio_player.dart';
 import 'package:plants_vs_zombie/Utils.dart/math_util.dart';
 import 'package:plants_vs_zombie/Widgets/bullet.dart';
 import 'package:plants_vs_zombie/Widgets/cotrollers_button.dart';
+import 'package:plants_vs_zombie/Widgets/game_over.dart';
 import 'package:plants_vs_zombie/Widgets/plant.dart';
 import 'package:plants_vs_zombie/Widgets/score_board.dart';
 import 'package:plants_vs_zombie/Widgets/zombie.dart';
@@ -98,11 +100,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          _garden(),
-          _gameControllers(),
-        ],
+      body: SafeArea(
+        child: Container(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  _garden(),
+                  _gameControllers(),
+                ],
+              ),
+              GameOver(),
+            ],
+          ),
+        ),
       ),
     );
   }
