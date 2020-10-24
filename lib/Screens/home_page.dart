@@ -1,20 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:plants_vs_zombie/Constant/assets.dart';
 import 'package:plants_vs_zombie/Models/bullet.dart';
 import 'package:plants_vs_zombie/Models/main_handler.dart';
 import 'package:plants_vs_zombie/Models/plant.dart';
 import 'package:plants_vs_zombie/Models/zombie.dart';
-import 'package:plants_vs_zombie/Utils.dart/audio_player.dart';
-import 'package:plants_vs_zombie/Utils.dart/math_util.dart';
+import 'package:plants_vs_zombie/Utils/audio_player.dart';
+import 'package:plants_vs_zombie/Utils/math_util.dart';
 import 'package:plants_vs_zombie/Widgets/bullet.dart';
 import 'package:plants_vs_zombie/Widgets/cotrollers_button.dart';
-import 'package:plants_vs_zombie/Widgets/game_over.dart';
 import 'package:plants_vs_zombie/Widgets/plant.dart';
 import 'package:plants_vs_zombie/Widgets/score_board.dart';
 import 'package:plants_vs_zombie/Widgets/zombie.dart';
+import 'package:plants_vs_zombie/routes.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   ZombieHandler _zombie = ZombieHandler(1.1, 1);
   Timer _zombieTimer, _bulletTimer;
   int score = 0;
-  bool gameOver = false;
 
   _moveUp(MainHandler mock) {
     setState(() {
@@ -54,7 +52,9 @@ class _HomePageState extends State<HomePage> {
         if ((_bullet.x - _zombie.x).abs() < 0.05 &&
             (_bullet.y - _zombie.y).abs() < 0.2) {
           timer.cancel();
-          _zombieTimer.cancel();
+          if (_zombieTimer != null) {
+            _zombieTimer.cancel();
+          }
           _bullet.initCords(5, 5);
           _calculateScore();
           _moveZombie();
@@ -78,8 +78,13 @@ class _HomePageState extends State<HomePage> {
         });
         if ((_plant.x - _zombie.x).abs() < 0.05) {
           timer.cancel();
-          _bulletTimer.cancel();
+          if (_bulletTimer != null) {
+            _bulletTimer.cancel();
+          }
           print("Game Over");
+          Navigator.pushNamedAndRemoveUntil(
+              context, Routes.game_over, (route) => false,
+              arguments: score);
         }
       });
     }
@@ -102,15 +107,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          child: Stack(
+          child: Column(
             children: [
-              Column(
-                children: [
-                  _garden(),
-                  _gameControllers(),
-                ],
-              ),
-              GameOver(),
+              _garden(),
+              _gameControllers(),
             ],
           ),
         ),

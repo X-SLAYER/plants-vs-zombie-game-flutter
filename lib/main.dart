@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:plants_vs_zombie/Screens/home_page.dart';
+import 'package:plants_vs_zombie/routes.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: HomePage(),
+      routes: Routes.routes,
     );
   }
 }
