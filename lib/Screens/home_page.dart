@@ -57,11 +57,11 @@ class _HomePageState extends State<HomePage> {
   /// shooting the bullets
   _shootBullet() async {
     if (_bullet.x == 5) {
-      await AudioPlayer.playSound();
+      await AudioPlayer.playSound(Assets.shootSoundEffet);
       setState(() {
         _bullet.initCords(_plant.x, _plant.y);
       });
-      _bulletTimer = Timer.periodic(Duration(milliseconds: 30), (timer) {
+      _bulletTimer = Timer.periodic(Duration(milliseconds: 10), (timer) {
         setState(() {
           _bullet.moveRight();
         });

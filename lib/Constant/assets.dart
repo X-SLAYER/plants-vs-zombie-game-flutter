@@ -8,4 +8,5 @@ class Assets {
   static const zombieHead = "assets/images/zombie_.png";
   //---
   static const shootSoundEffet = "sounds/bullet.wav";
+  static const game_over = "sounds/game_over.mp3";
 }

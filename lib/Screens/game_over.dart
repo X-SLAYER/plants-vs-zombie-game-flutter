@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plants_vs_zombie/Constant/assets.dart';
+import 'package:plants_vs_zombie/Utils/audio_player.dart';
 import 'package:plants_vs_zombie/routes.dart';
 
 class GameOver extends StatelessWidget {
+  _playSound() async {
+    await AudioPlayer.playSound(Assets.game_over);
+  }
+
   @override
   Widget build(BuildContext context) {
     final int score = ModalRoute.of(context).settings.arguments as int;
+    _playSound();
 
     return Material(
       child: Center(
