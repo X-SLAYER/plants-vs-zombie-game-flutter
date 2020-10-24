@@ -11,6 +11,7 @@ import 'package:plants_vs_zombie/Utils.dart/math_util.dart';
 import 'package:plants_vs_zombie/Widgets/bullet.dart';
 import 'package:plants_vs_zombie/Widgets/cotrollers_button.dart';
 import 'package:plants_vs_zombie/Widgets/plant.dart';
+import 'package:plants_vs_zombie/Widgets/score_board.dart';
 import 'package:plants_vs_zombie/Widgets/zombie.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,6 +24,8 @@ class _HomePageState extends State<HomePage> {
   Bullethandler _bullet = Bullethandler(5, 5);
   ZombieHandler _zombie = ZombieHandler(1.1, 1);
   Timer _zombieTimer, _bulletTimer;
+  int score = 0;
+  bool gameOver = false;
 
   _moveUp(MainHandler mock) {
     setState(() {
@@ -40,17 +43,18 @@ class _HomePageState extends State<HomePage> {
     if (_bullet.x == 5) {
       await AudioPlayer.playSound();
       setState(() {
-        _bullet.initCords(_plant.x + 0.1, _plant.y - 0.11);
+        _bullet.initCords(_plant.x, _plant.y);
       });
       _bulletTimer = Timer.periodic(Duration(milliseconds: 30), (timer) {
         setState(() {
           _bullet.moveRight();
         });
         if ((_bullet.x - _zombie.x).abs() < 0.05 &&
-            (_bullet.y - _zombie.y).abs() < 0.05) {
+            (_bullet.y - _zombie.y).abs() < 0.2) {
           timer.cancel();
           _zombieTimer.cancel();
           _bullet.initCords(5, 5);
+          _calculateScore();
           _moveZombie();
         }
         if (_bullet.x > 1.3) {
@@ -66,7 +70,7 @@ class _HomePageState extends State<HomePage> {
       _zombie.initCords(1.1, nexRandom(-0.9, 0.9));
     });
     if (_zombie.x == 1.1) {
-      _zombieTimer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      _zombieTimer = Timer.periodic(Duration(milliseconds: 150), (timer) {
         setState(() {
           _zombie.moveLeft();
         });
@@ -77,6 +81,12 @@ class _HomePageState extends State<HomePage> {
         }
       });
     }
+  }
+
+  _calculateScore() {
+    setState(() {
+      score++;
+    });
   }
 
   @override
@@ -122,9 +132,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            ControllerButton(
-              icon: Icons.play_arrow,
-              onTap: _moveZombie,
+            ScoreBoard(
+              score: score,
             ),
             ControllerButton(
               icon: Icons.fire_extinguisher,
