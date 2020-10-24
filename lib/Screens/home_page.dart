@@ -14,6 +14,7 @@ import 'package:plants_vs_zombie/Widgets/plant.dart';
 import 'package:plants_vs_zombie/Widgets/score_board.dart';
 import 'package:plants_vs_zombie/Widgets/zombie.dart';
 import 'package:plants_vs_zombie/routes.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,18 +28,33 @@ class _HomePageState extends State<HomePage> {
   Timer _zombieTimer, _bulletTimer;
   int score = 0;
 
+  /// move the plant up Y↑
   _moveUp(MainHandler mock) {
-    setState(() {
-      mock.moveUp(-0.05);
+    Timer.periodic(Duration(milliseconds: 100), (timer) {
+      if (ControllerButton().isTapping()) {
+        setState(() {
+          mock.moveUp(-0.05);
+        });
+      } else {
+        timer.cancel();
+      }
     });
   }
 
+  /// move the plant Down Y↓
   _moveDown(MainHandler mock) {
-    setState(() {
-      mock.moveDown(0.05);
+    Timer.periodic(Duration(milliseconds: 100), (timer) {
+      if (ControllerButton().isTapping()) {
+        setState(() {
+          mock.moveDown(0.05);
+        });
+      } else {
+        timer.cancel();
+      }
     });
   }
 
+  /// shooting the bullets
   _shootBullet() async {
     if (_bullet.x == 5) {
       await AudioPlayer.playSound();
@@ -67,6 +83,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /// moving the zombie
   _moveZombie() {
     setState(() {
       _zombie.initCords(1.1, nexRandom(-0.9, 0.9));
@@ -147,7 +164,7 @@ class _HomePageState extends State<HomePage> {
               score: score,
             ),
             ControllerButton(
-              icon: Icons.fire_extinguisher,
+              icon: FontAwesomeIcons.meteor,
               onTap: _shootBullet,
             ),
           ],
