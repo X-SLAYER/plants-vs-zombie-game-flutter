@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.plants_vs_zombie">
    <application
-        android:label="plants_vs_zombie"
+        android:label="Plants vs Zombies"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
