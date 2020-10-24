@@ -6,6 +6,8 @@ import 'package:plants_vs_zombie/Models/bullet.dart';
 import 'package:plants_vs_zombie/Models/main_handler.dart';
 import 'package:plants_vs_zombie/Models/plant.dart';
 import 'package:plants_vs_zombie/Models/zombie.dart';
+import 'package:plants_vs_zombie/Utils.dart/audio_player.dart';
+import 'package:plants_vs_zombie/Utils.dart/math_util.dart';
 import 'package:plants_vs_zombie/Widgets/bullet.dart';
 import 'package:plants_vs_zombie/Widgets/cotrollers_button.dart';
 import 'package:plants_vs_zombie/Widgets/plant.dart';
@@ -17,9 +19,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  PlantHandler _plant = PlantHandler(-0.90, 1);
+  PlantHandler _plant = PlantHandler(-0.90, 0.2);
   Bullethandler _bullet = Bullethandler(5, 5);
-  ZombieHandler _zombie = ZombieHandler(1, 1);
+  ZombieHandler _zombie = ZombieHandler(1.1, 1);
+  Timer _zombieTimer, _bulletTimer;
 
   _moveUp(MainHandler mock) {
     setState(() {
@@ -33,40 +36,53 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  _shootBullet() {
+  _shootBullet() async {
     if (_bullet.x == 5) {
+      await AudioPlayer.playSound();
       setState(() {
         _bullet.initCords(_plant.x + 0.1, _plant.y - 0.11);
       });
-      Timer.periodic(Duration(milliseconds: 30), (timer) {
+      _bulletTimer = Timer.periodic(Duration(milliseconds: 30), (timer) {
         setState(() {
           _bullet.moveRight();
         });
+        if ((_bullet.x - _zombie.x).abs() < 0.05 &&
+            (_bullet.y - _zombie.y).abs() < 0.05) {
+          timer.cancel();
+          _zombieTimer.cancel();
+          _bullet.initCords(5, 5);
+          _moveZombie();
+        }
         if (_bullet.x > 1.3) {
           timer.cancel();
           _bullet.initCords(5, 5);
-          print("Stopped The Bullet");
         }
       });
     }
   }
 
   _moveZombie() {
-    if (_zombie.x == 5) {
-      setState(() {
-        _zombie.initCords(_plant.x + 0.1, _plant.y - 0.11);
-      });
-      Timer.periodic(Duration(milliseconds: 30), (timer) {
+    setState(() {
+      _zombie.initCords(1.1, nexRandom(-0.9, 0.9));
+    });
+    if (_zombie.x == 1.1) {
+      _zombieTimer = Timer.periodic(Duration(milliseconds: 100), (timer) {
         setState(() {
-          _zombie.moveRight();
+          _zombie.moveLeft();
         });
-        if (_zombie.x > 1.3) {
+        if ((_plant.x - _zombie.x).abs() < 0.05) {
           timer.cancel();
-          _zombie.initCords(5, 5);
-          print("Stopped The Bullet");
+          _bulletTimer.cancel();
+          print("Game Over");
         }
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _moveZombie();
   }
 
   @override
@@ -105,6 +121,10 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ],
+            ),
+            ControllerButton(
+              icon: Icons.play_arrow,
+              onTap: _moveZombie,
             ),
             ControllerButton(
               icon: Icons.fire_extinguisher,
@@ -147,7 +167,7 @@ class _HomePageState extends State<HomePage> {
         ),
         AnimatedContainer(
           duration: Duration(milliseconds: 0),
-          alignment: Alignment(1.1, _zombie.y),
+          alignment: Alignment(_zombie.x, _zombie.y),
           child: Zombie(),
         ),
       ],

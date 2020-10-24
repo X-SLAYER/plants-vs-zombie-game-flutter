@@ -33,4 +33,9 @@ class MainHandler {
     stepOnX(0.02);
     print(x);
   }
+
+  moveLeft() {
+    stepOnX(-0.02);
+    print(x);
+  }
 }
