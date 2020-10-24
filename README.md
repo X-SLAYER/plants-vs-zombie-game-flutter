@@ -1,16 +1,16 @@
-# plants_vs_zombie
+# Plants vs Zombies Game in flutter
 
-A new Flutter project.
+simple plants vs zombies game in flutter 
 
-## Getting Started
+ # Give the repo ⭐️ for the support :) 
 
-This project is a starting point for a Flutter application.
+![img](https://i.imgur.com/SuY6wDl.png "plantsVsSombies")
+![img](https://i.imgur.com/K2Ru2Fd.png "gameOver")
 
-A few resources to get you started if this is your first Flutter project:
+- [Youtube Channel](https://www.youtube.com/c/XSLAYERTN)
+- [Linkedin](https://www.linkedin.com/in/x-slayer/)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Visitors Count
+
+<img align="left" src = "https://profile-counter.glitch.me/plants-vs-zombie-game-flutter/count.svg" alt ="Loading">
