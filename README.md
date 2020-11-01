@@ -4,7 +4,8 @@ simple plants vs zombies game in flutter
 
  # Give the repo ⭐️ for the support :) 
 
-![img](https://i.imgur.com/SuY6wDl.png "plantsVsSombies")
+![img](https://i.imgur.com/efWDB20.jpg "plantsVsSombies")
+
 ![img](https://i.imgur.com/K2Ru2Fd.png "gameOver")
 
 - [Youtube Channel](https://www.youtube.com/c/XSLAYERTN)
